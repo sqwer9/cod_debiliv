@@ -1,0 +1,45 @@
+mport random
+from typing import Dict
+
+def add_attempt(attempts):
+    attempts += 1
+    return attempts
+
+hints: Dict[int, str] = {
+    0: 'JARA',
+    1: 'GARYACHE',
+    2: 'teplo',
+    3: 'svejho shoto',
+    4: 'maroz',
+    5: 'LOH'
+}
+
+trial_completed: bool = False
+start = 0
+fin = 1000
+questrange = fin - start + 1
+shift = ((questrange // len(hints)) + 1)
+quest: int = random.randint(start, fin)
+attempts: int = 0
+while not trial_completed:
+    trial = input(f'vgadaj 4islo vid {start} do {fin}\n')
+    try:
+        trial = int(trial)
+    except ValueError:
+        print('dalbaeb? 4islo')
+        attempts = add_attempt(attempts)
+        continue
+
+    if start <= trial <= fin:
+        if quest == trial:
+            attempts = add_attempt(attempts)
+            trial_completed = True
+            print(f'krasava, vgadav, potratyv {attempts} sprob')
+        else:
+            difference = abs(quest - trial)
+            climat = difference // shift
+            print(f'loshara, {hints[climat]}, no {"treba bilshe" if quest>trial else "treba menshe"} ')
+            attempts = add_attempt(attempts)
+    else:
+        print(f'dalbaeb? vid {start} do {fin}')
+        attempts = add_attempt(attempts)
